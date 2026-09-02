@@ -564,7 +564,6 @@ async function savePrepostiToFirebase(data, proto) {
   } catch(e) { console.error('Firebase Preposti error:', e.message); }
 }
 const HSE_DIRECT = 'omar.feletti@somecsintesi.com'; // HSE Specialist Sintesi — destinatario diretto
-const HSE_CC = 'msterchele@somecgroup.com'; // sempre in copia
 
 // ==========================================
 // ELENCO PREPOSTI NOMINATI SOMEC SINTESI
@@ -1672,7 +1671,7 @@ async function confirmSend(){
   const extraEmails = [...document.querySelectorAll('.send-email-input')].map(i=>i.value.trim()).filter(Boolean);
 
   // Destinatari sempre presenti: Omar + Marco + preposto (se ha indicato la sua email)
-  const emails = [HSE_DIRECT, HSE_CC, ...(data.prepostoEmail ? [data.prepostoEmail] : []), ...extraEmails];
+  const emails = [HSE_DIRECT, ...(data.prepostoEmail ? [data.prepostoEmail] : []), ...extraEmails];
 
   const statusEl = document.getElementById('send-status');
   statusEl.style.display = 'block';
@@ -1794,8 +1793,8 @@ async function confirmSend(){
   }
 
   try{
-    // Invio 1: sempre a Omar + Marco, isolato
-    await sendTo([HSE_DIRECT, HSE_CC]);
+    // Invio 1: sempre a Omar, isolato
+    await sendTo([HSE_DIRECT]);
 
     // Invio 2: preposto + eventuali extra, solo se presenti
     if(otherEmails.length > 0){
